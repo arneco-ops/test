@@ -24,8 +24,8 @@ modules:
     requires:
     - name: angebotsliste
       artifacts:
-      - .zip
-      target-path: resources/
+      - angebotsliste.zip
+      target-path: resources/angebotsliste/
 resources:
 - name: wm-angebotsliste-xsuaa
   type: org.cloudfoundry.managed-service
