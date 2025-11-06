@@ -25,7 +25,7 @@ modules:
     - name: angebotsliste
       artifacts:
       - angebotsliste.zip
-      target-path: resources/
+      target-path: resources/angebotsliste/
 resources:
 - name: wm-angebotsliste-xsuaa
   type: org.cloudfoundry.managed-service
