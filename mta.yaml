@@ -10,8 +10,10 @@ modules:
     commands:
     - npm ci
     - npm run build:cf
+    - mkdir -p gen/deployer
+    - cp dist/angebotsliste.zip gen/deployer/
     supported-platforms: []
-    build-result: dist
+    build-result: gen/deployer
 - name: angebotsliste-deployer
   type: com.sap.application.content
   path: .
@@ -25,7 +27,7 @@ modules:
     - name: angebotsliste
       artifacts:
       - angebotsliste.zip
-      target-path: resources/angebotsliste/
+      target-path: resources/
 resources:
 - name: wm-angebotsliste-xsuaa
   type: org.cloudfoundry.managed-service
