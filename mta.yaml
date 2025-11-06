@@ -73,10 +73,6 @@ resources:
       service: html5-apps-repo
       service-name: angebotsliste-html5-service
       service-plan: app-host
-      ## KRITISCH: Diese Config verknüpft den Host mit der App
-      config:
-        xs-appname: "angebotsliste"    # Muss mit sap.app.id übereinstimmen
-        service: "angebotsliste"        # Muss mit sap.cloud.service übereinstimmen
 
   ## HTML5 Application Repository - Runtime Service
   ## Ermöglicht Zugriff auf deployed HTML5 Apps zur Laufzeit
