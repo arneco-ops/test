@@ -1,12 +1,33 @@
+# =============================================================================
+# SAP BTP HTML5 Application - Git Ignore File
+# =============================================================================
+# Schließt temporäre Dateien und Build-Artefakte von der Versionskontrolle aus
+# =============================================================================
+
+## Node.js Dependencies
 node_modules/
-dist/
-gen/
-.scp/
-.env
-Makefile*.mta
-mta_archives
-mta-*
-resources
-archive.zip
-.*_mta_build_tmp
-test-resources/
+
+## UI5 Build Outputs
+dist/                    # UI5 Build Output (ui5 build)
+dist-zip/                # Separates ZIP-Verzeichnis für MTA Build
+gen/                     # Generierte Dateien
+test-resources/          # Test-Build-Artefakte
+
+## MTA Build Artifacts
+mta_archives/            # Finale MTAR-Dateien
+resources/               # MTA Build Resources
+.scp/                    # SAP Cloud Platform Build-Dateien
+Makefile*.mta            # Generierte MTA Makefiles
+mta-*                    # MTA temporäre Dateien
+.*_mta_build_tmp         # MTA Build temporäre Verzeichnisse
+archive.zip              # Temporäre Archive
+
+## Environment & Secrets
+.env                     # Environment-Variablen (nie committen!)
+
+## IDE & Editor Files (optional)
+.vscode/settings.json    # Persönliche VS Code Einstellungen
+.idea/                   # IntelliJ IDEA
+*.swp                    # Vim swap files
+*.swo                    # Vim swap files
+*~                       # Backup files

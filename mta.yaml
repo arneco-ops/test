@@ -1,69 +1,107 @@
+## ============================================================================
+## SAP BTP HTML5 Application - Multi-Target Application Descriptor
+## ============================================================================
+## Diese Datei definiert die Struktur und Abhängigkeiten der Anwendung für
+## das Deployment auf SAP Business Technology Platform (Cloud Foundry)
+## ============================================================================
+
 _schema-version: "3.2"
 ID: angebotsliste
 version: 1.0.0
 
-modules:
-- name: angebotsliste
-  type: html5
-  path: .
-  build-parameters:
-    builder: custom
-    commands:
-    - npm ci
-    - npm run build:cf
-    - mkdir -p dist-zip
-    - cp dist/angebotsliste.zip dist-zip/
-    supported-platforms: []
-    build-result: dist-zip
+## ----------------------------------------------------------------------------
+## MODULES - Deploybare Komponenten der Anwendung
+## ----------------------------------------------------------------------------
 
-- name: angebotsliste-deployer
-  type: com.sap.application.content
-  path: .
-  requires:
-  - name: angebotsliste-repo-host
-    parameters:
-      content-target: true
-  build-parameters:
-    build-result: resources
+modules:
+  ## HTML5 Application Module
+  ## Enthält die UI5 Anwendung und wird als ZIP-Archiv gebaut
+  - name: angebotsliste
+    type: html5
+    path: .
+    build-parameters:
+      builder: custom
+      commands:
+        - npm ci                         # Clean install aller Dependencies
+        - npm run build:cf               # UI5 Build für Cloud Foundry
+        - mkdir -p dist-zip              # Separates Verzeichnis nur für ZIP
+        - cp dist/angebotsliste.zip dist-zip/  # Kopiere nur ZIP (keine anderen Dateien)
+      supported-platforms: []
+      build-result: dist-zip             # Nur ZIP-Verzeichnis als Build Output
+      # Optimierung: node_modules werden nicht ins MTAR gepackt
+      ignore:
+        - node_modules/
+        - test/
+        - test-resources/
+        - .git/
+        - .gitignore
+        - package-lock.json
+
+  ## Deployer Module für HTML5 Application Repository
+  ## Lädt die HTML5 App in den BTP HTML5 Application Repository Service hoch
+  - name: angebotsliste-deployer
+    type: com.sap.application.content
+    path: .
     requires:
-    - name: angebotsliste
-      artifacts:
-      - angebotsliste.zip
-      target-path: resources/
+      - name: angebotsliste-repo-host
+        parameters:
+          content-target: true           # Deployment-Ziel für HTML5 Content
+    build-parameters:
+      build-result: resources
+      requires:
+        - name: angebotsliste
+          artifacts:
+            - angebotsliste.zip          # ZIP-Datei aus dem HTML5 Module
+          target-path: resources/        # Direkt ins resources/ Verzeichnis
+
+## ----------------------------------------------------------------------------
+## RESOURCES - BTP Service Instanzen
+## ----------------------------------------------------------------------------
 
 resources:
-- name: angebotsliste-repo-host
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: html5-apps-repo
-    service-name: angebotsliste-html5-service
-    service-plan: app-host
+  ## HTML5 Application Repository - Host Service
+  ## Speichert die HTML5 Application Files
+  - name: angebotsliste-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: angebotsliste-html5-service
+      service-plan: app-host
 
-- name: wm-angebotsliste-xsuaa
-  type: org.cloudfoundry.managed-service
-  parameters:
-    path: ./xs-security.json
-    service: xsuaa
-    service-plan: application
+  ## XSUAA Service - Authentication & Authorization
+  ## Verwaltet Benutzer-Authentifizierung und Berechtigungen
+  - name: wm-angebotsliste-xsuaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json           # Security Konfiguration
+      service: xsuaa
+      service-plan: application
 
-- name: angebotsliste-destination-service
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: destination
-    service-name: angebotsliste-destination-service
-    service-plan: lite
-    config:
-      HTML5Runtime_enabled: true
-      init_data:
-        instance:
-          destinations:
-          - Name: ui5
-            Type: HTTP
-            URL: https://ui5.sap.com
-            ProxyType: Internet
-            Authentication: NoAuthentication
-          existing_destinations_policy: update
+  ## Destination Service
+  ## Verwaltet Verbindungen zu Backend-Systemen
+  - name: angebotsliste-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-name: angebotsliste-destination-service
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true       # HTML5 Runtime aktiviert
+        init_data:
+          instance:
+            destinations:
+              ## UI5 CDN Destination für SAPUI5 Libraries
+              - Name: ui5
+                Type: HTTP
+                URL: https://ui5.sap.com
+                ProxyType: Internet
+                Authentication: NoAuthentication
+            existing_destinations_policy: update
+
+## ----------------------------------------------------------------------------
+## PARAMETERS - Globale Deployment-Einstellungen
+## ----------------------------------------------------------------------------
 
 parameters:
-  deploy_mode: html5-repo
-  enable-parallel-deployments: true
+  deploy_mode: html5-repo                # Deployment-Modus: HTML5 Repository
+  enable-parallel-deployments: true      # Paralleles Deployment für schnellere Builds
