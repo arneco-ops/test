@@ -10,10 +10,8 @@ modules:
     commands:
     - npm ci
     - npm run build:cf
-    - mkdir -p deployer/angebotsliste
-    - cp dist/angebotsliste.zip deployer/angebotsliste/
     supported-platforms: []
-    build-result: deployer
+    build-result: dist
 - name: angebotsliste-deployer
   type: com.sap.application.content
   path: .
@@ -26,7 +24,7 @@ modules:
     requires:
     - name: angebotsliste
       artifacts:
-      - angebotsliste/angebotsliste.zip
+      - angebotsliste.zip
       target-path: resources/
 resources:
 - name: wm-angebotsliste-xsuaa
