@@ -32,6 +32,6 @@ builder:
       configuration:
         archiveName: angebotsliste       # Name des ZIP-Archives
         # Zusätzliche Dateien, die zum ZIP hinzugefügt werden
+        # HINWEIS: manifest.json wird automatisch aus webapp/ gepackt
         additionalFiles:
           - xs-app.json                  # App Router Konfiguration
-          - manifest.json                # Application Descriptor (wichtig für HTML5 Repo!)
