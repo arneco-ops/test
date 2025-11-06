@@ -71,7 +71,7 @@ resources:
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
-      service-name: angebotsliste-html5-service
+      service-name: angebotsliste-html5-app-host
       service-plan: app-host
 
   ## HTML5 Application Repository - Runtime Service
@@ -80,6 +80,7 @@ resources:
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
+      service-name: angebotsliste-html5-app-runtime
       service-plan: app-runtime
 
   ## XSUAA Service - Authentication & Authorization
