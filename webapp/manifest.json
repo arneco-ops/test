@@ -1,9 +1,5 @@
 {
     "_version": "1.12.0",
-    "sap.cloud": {
-    "public": true,
-    "service": "angebotsliste"
-  },
     "sap.app": {
         "id": "angebotsliste",
         "type": "application",
@@ -27,6 +23,10 @@
             "version": "0.0.0",
             "toolsId": "86d88bbd-b759-4b81-b880-94e04537287d"
         }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "angebotsliste"
     },
     "sap.ui": {
         "technology": "UI5",
@@ -78,7 +78,7 @@
                     "defaultCountMode": "None",
                     "useBatch": true
                 },
-                "dataSource": "ZQU_PM_LIST_SRV",
+                "dataSource": "mainService",
                 "preload": true
             },
             "upload": {

@@ -34,3 +34,4 @@ builder:
         # Zusätzliche Dateien, die zum ZIP hinzugefügt werden
         additionalFiles:
           - xs-app.json                  # App Router Konfiguration
+          - manifest.json                # Application Descriptor (wichtig für HTML5 Repo!)
