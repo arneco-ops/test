@@ -1,0 +1,38 @@
+specVersion: "3.1"
+metadata:
+  name: angebotsliste
+type: application
+framework:
+  name: SAPUI5
+  version: 1.120.39
+  libraries:
+    - name: sap.ui.core
+    - name: sap.m
+    - name: sap.f
+    - name: sap.ui.comp
+    - name: sap.ui.generic.app
+    - name: sap.ui.table
+    - name: sap.ushell
+    - name: themelib_sap_bluecrystal
+    - name: themelib_sap_horizon
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        backend:
+          - path: /sap
+            url: http://w10-web.sap.asit.services:443
+            destination: W10
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: angebotsliste
+        ui5Theme: sap_horizon

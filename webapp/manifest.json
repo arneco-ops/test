@@ -1,0 +1,193 @@
+{
+    "_version": "1.12.0",
+    "sap.cloud": {
+    "public": true,
+    "service": "angebotsliste"
+  },
+    "sap.app": {
+        "id": "angebotsliste",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "Angebotsliste",
+        "description": "UI5 App für Angebotsliste",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/sap/opu/odata/sap/ZQU_PM_LIST_SRV/",
+                "type": "OData",
+                "settings": {
+                    "localUri": "localService/metadata.xml"
+                }
+            }
+        },
+        "sourceTemplate": {
+            "id": "servicecatalog.connectivityComponentForManifest",
+            "version": "0.0.0",
+            "toolsId": "86d88bbd-b759-4b81-b880-94e04537287d"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "sap-icon://detail-view",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": false
+        }
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "de.axelspringer.sd.advertising.Angebots_Liste.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        },
+        "dependencies": {
+            "minUI5Version": "1.42.0",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.m": {},
+                "sap.f": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "de.axelspringer.sd.advertising.Angebots_Liste.i18n.i18n"
+                }
+            },
+            "": {
+                "type": "sap.ui.model.odata.v2.ODataModel",
+                "settings": {
+                    "defaultOperationMode": "Auto",
+                    "defaultBindingMode": "TwoWay",
+                    "defaultCountMode": "None",
+                    "useBatch": true
+                },
+                "dataSource": "ZQU_PM_LIST_SRV",
+                "preload": true
+            },
+            "upload": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "de.axelspringer.sd.advertising.Angebots_Liste.properties.upload"
+                }
+            },
+            "global": {
+                "type": "sap.ui.model.json.JSONModel"
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.f.routing.Router",
+                "viewType": "XML",
+                "viewPath": "de.axelspringer.sd.advertising.Angebots_Liste.view",
+                "controlId": "layout",
+                "controlAggregation": "beginColumnPages",
+                "bypassed": {
+                    "target": "notFound"
+                },
+                "async": true
+            },
+            "routes": [
+                {
+                    "pattern": "",
+                    "name": "master",
+                    "target": [
+                        "master",
+                        "detail"
+                    ],
+                    "layout": "TwoColumnsBeginExpanded"
+                },
+                {
+                    "pattern": "HeaderCollection/{objectId}",
+                    "name": "detail",
+                    "target": [
+                        "master",
+                        "detail"
+                    ],
+                    "layout": "TwoColumnsMidExpanded"
+                },
+                {
+                    "name": "single",
+                    "pattern": "DetailCollection/{single}",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "detail",
+                        "single",
+                        "master"
+                    ],
+                    "layout": "ThreeColumnsMidExpanded"
+                }
+            ],
+            "targets": {
+                "master": {
+                    "viewName": "Master",
+                    "viewLevel": 1,
+                    "viewId": "master",
+                    "transition": "show",
+                    "clearControlAggregation": true
+                },
+                "detail": {
+                    "viewName": "Detail",
+                    "viewId": "detail",
+                    "viewLevel": 2,
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailObjectNotFound": {
+                    "viewName": "DetailObjectNotFound",
+                    "viewId": "detailObjectNotFound",
+                    "controlAggregation": "midColumnPages"
+                },
+                "notFound": {
+                    "viewName": "NotFound",
+                    "viewId": "notFound"
+                },
+                "single": {
+                    "viewType": "XML",
+                    "viewName": "Single",
+                    "viewLevel": 3,
+                    "controlAggregation": "endColumnPages"
+                },
+                "toMaster": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewName": "StartAsFree",
+                    "viewLevel": 1,
+                    "viewId": "startAsFree"
+                },
+                "testView": {
+                    "viewType": "XML",
+                    "viewName": "TestView",
+                    "transition": "slide",
+                    "viewLevel": 1,
+                    "clearControlAggregation": false
+                }
+            }
+        }
+    },
+    "sap.platform.abap": {
+        "uri": "/sap/bc/ui5_ui5/sap/zqu_anglist1/",
+        "_version": "1.2.0"
+    },
+    "sap.platform.hcp": {
+        "uri": "",
+        "_version": "1.2.0"
+    }
+}

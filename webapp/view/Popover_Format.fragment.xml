@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover showHeader="false" contentWidth="16rem" contentHeight="40%" resizable="true" placement="Bottom">
+		<NavContainer id="navCon">
+			<Page id="master" title="{i18n>FragmentFormatTite}">
+				<List
+					id="FormatList"
+					items="{/MultiFormatCollection}" updateFinished="_onListUpdateFinished" updateStarted="_onListUpdateStarted" >
+
+					<StandardListItem
+						title="{Descr}"
+						type="Active" />
+				</List>
+			</Page>
+		</NavContainer>
+	</Popover>
+</core:FragmentDefinition>

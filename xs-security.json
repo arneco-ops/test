@@ -1,0 +1,19 @@
+{
+  "xsappname": "angebotsliste-xsapp",
+  "tenant-mode": "shared",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Display",
+      "description": "Display access"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "View data",
+      "scope-references": [
+        "$XSAPPNAME.Display"
+      ]
+    }
+  ]
+}
