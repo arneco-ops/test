@@ -22,10 +22,10 @@ modules:
   build-parameters:
     build-result: resources
     requires:
-    - artifacts:
+    - name: angebotsliste
+      artifacts:
       - dist
-        name: angebotsliste
-        target-path: resources/angebotsliste
+      target-path: resources/angebotsliste
 resources:
 - name: wm-angebotsliste-xsuaa
   type: org.cloudfoundry.managed-service
