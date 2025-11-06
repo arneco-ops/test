@@ -10,10 +10,22 @@ modules:
     commands:
     - npm ci
     - npm run build
-    - mkdir -p gen/app
-    - bash -c "cd dist && zip -r ../gen/app/angebotsliste.zip . -x '*.zip'"
     supported-platforms: []
-    build-result: gen/app
+    build-result: dist
+- name: angebotsliste-deployer
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: angebotsliste-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - dist
+        name: angebotsliste
+        target-path: resources/angebotsliste
 resources:
 - name: wm-angebotsliste-xsuaa
   type: org.cloudfoundry.managed-service
