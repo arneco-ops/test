@@ -9,7 +9,7 @@ modules:
     builder: custom
     commands:
     - npm ci
-    - npm run build
+    - npm run build:cf
     supported-platforms: []
     build-result: dist
 - name: angebotsliste-deployer
@@ -24,8 +24,8 @@ modules:
     requires:
     - name: angebotsliste
       artifacts:
-      - dist
-      target-path: resources/angebotsliste
+      - angebotsliste.zip
+      target-path: resources/
 resources:
 - name: wm-angebotsliste-xsuaa
   type: org.cloudfoundry.managed-service
