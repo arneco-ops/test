@@ -24,7 +24,7 @@ modules:
     requires:
     - name: angebotsliste
       artifacts:
-      - angebotsliste.zip
+      - .zip
       target-path: resources/
 resources:
 - name: wm-angebotsliste-xsuaa
