@@ -3,38 +3,86 @@
 ## ============================================================================
 ## Diese Datei definiert die Struktur und Abhängigkeiten der Anwendung für
 ## das Deployment auf SAP Business Technology Platform (Cloud Foundry)
+## Basiert auf SAP Best Practice für managed approuter Setup
 ## ============================================================================
 
 _schema-version: "3.2"
 ID: angebotsliste
 version: 1.0.0
+description: Angebotsliste HTML5 App with managed approuter
 
 ## ----------------------------------------------------------------------------
 ## MODULES - Deploybare Komponenten der Anwendung
 ## ----------------------------------------------------------------------------
 
 modules:
+  ## Destination Content Module
+  ## KRITISCH: Erstellt Service-Keys und registriert Destinations
+  ## Ohne dieses Modul wird die App nicht im Cockpit angezeigt!
+  - name: angebotsliste-dest-content
+    type: com.sap.application.content
+    requires:
+      - name: angebotsliste-destination-service
+        parameters:
+          content-target: true
+      - name: angebotsliste-repo-host
+        parameters:
+          service-key:
+            name: angebotsliste-repo-host-key
+      - name: wm-angebotsliste-xsuaa
+        parameters:
+          service-key:
+            name: angebotsliste-xsuaa-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            ## HTML5 Repo Host als Destination registrieren
+            - Name: angebotsliste_repo_host
+              ServiceInstanceName: angebotsliste-html5-app-host
+              ServiceKeyName: angebotsliste-repo-host-key
+              sap.cloud.service: angebotsliste
+            ## XSUAA als Destination für OAuth2 registrieren
+            - Authentication: OAuth2UserTokenExchange
+              Name: angebotsliste_xsuaa
+              ServiceInstanceName: wm-angebotsliste-xsuaa
+              ServiceKeyName: angebotsliste-xsuaa-key
+              sap.cloud.service: angebotsliste
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+
+  ## HTML5 Application Content Module
+  ## Lädt die HTML5 App in den BTP HTML5 Application Repository Service hoch
+  - name: angebotsliste-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: angebotsliste-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - name: angebotsliste
+          artifacts:
+            - angebotsliste.zip
+          target-path: resources/
+
   ## HTML5 Application Module
   ## Enthält die UI5 Anwendung und wird als ZIP-Archiv gebaut
   - name: angebotsliste
     type: html5
     path: .
-    ## WICHTIG: Service-Bindungen für HTML5 App Repository
-    requires:
-      - name: wm-angebotsliste-xsuaa
-      - name: wm-angebotsliste-html5-repo
-      - name: angebotsliste-repo-host
-      - name: angebotsliste-destination-service
     build-parameters:
       builder: custom
       commands:
-        - npm ci                         # Clean install aller Dependencies
-        - npm run build:cf               # UI5 Build für Cloud Foundry
-        - mkdir -p dist-zip              # Separates Verzeichnis nur für ZIP
-        - cp dist/angebotsliste.zip dist-zip/  # Kopiere nur ZIP (keine anderen Dateien)
+        - npm ci
+        - npm run build:cf
+        - mkdir -p dist-zip
+        - cp dist/angebotsliste.zip dist-zip/
       supported-platforms: []
-      build-result: dist-zip             # Nur ZIP-Verzeichnis als Build Output
-      # Optimierung: node_modules werden nicht ins MTAR gepackt
+      build-result: dist-zip
       ignore:
         - node_modules/
         - test/
@@ -43,55 +91,11 @@ modules:
         - .gitignore
         - package-lock.json
 
-  ## Deployer Module für HTML5 Application Repository
-  ## Lädt die HTML5 App in den BTP HTML5 Application Repository Service hoch
-  - name: angebotsliste-deployer
-    type: com.sap.application.content
-    path: .
-    requires:
-      - name: angebotsliste-repo-host
-        parameters:
-          content-target: true           # Deployment-Ziel für HTML5 Content
-    build-parameters:
-      build-result: resources
-      requires:
-        - name: angebotsliste
-          artifacts:
-            - angebotsliste.zip          # ZIP-Datei aus dem HTML5 Module
-          target-path: resources/        # Direkt ins resources/ Verzeichnis
-
 ## ----------------------------------------------------------------------------
 ## RESOURCES - BTP Service Instanzen
 ## ----------------------------------------------------------------------------
 
 resources:
-  ## HTML5 Application Repository - Host Service
-  ## Speichert die HTML5 Application Files
-  - name: angebotsliste-repo-host
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-name: angebotsliste-html5-app-host
-      service-plan: app-host
-
-  ## HTML5 Application Repository - Runtime Service
-  ## Ermöglicht Zugriff auf deployed HTML5 Apps zur Laufzeit
-  - name: wm-angebotsliste-html5-repo
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-name: angebotsliste-html5-app-runtime
-      service-plan: app-runtime
-
-  ## XSUAA Service - Authentication & Authorization
-  ## Verwaltet Benutzer-Authentifizierung und Berechtigungen
-  - name: wm-angebotsliste-xsuaa
-    type: org.cloudfoundry.managed-service
-    parameters:
-      path: ./xs-security.json           # Security Konfiguration
-      service: xsuaa
-      service-plan: application
-
   ## Destination Service
   ## Verwaltet Verbindungen zu Backend-Systemen
   - name: angebotsliste-destination-service
@@ -101,22 +105,41 @@ resources:
       service-name: angebotsliste-destination-service
       service-plan: lite
       config:
-        HTML5Runtime_enabled: true       # HTML5 Runtime aktiviert
+        HTML5Runtime_enabled: true
         init_data:
           instance:
             destinations:
-              ## UI5 CDN Destination für SAPUI5 Libraries
               - Name: ui5
                 Type: HTTP
                 URL: https://ui5.sap.com
                 ProxyType: Internet
                 Authentication: NoAuthentication
-            existing_destinations_policy: update
+            existing_destinations_policy: ignore
+        version: 1.0.0
+
+  ## XSUAA Service - Authentication & Authorization
+  ## Verwaltet Benutzer-Authentifizierung und Berechtigungen
+  - name: wm-angebotsliste-xsuaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-name: wm-angebotsliste-xsuaa
+      service-plan: application
+      path: ./xs-security.json
+
+  ## HTML5 Application Repository - Host Service
+  ## Speichert die HTML5 Application Files
+  - name: angebotsliste-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: angebotsliste-html5-app-host
+      service-plan: app-host
 
 ## ----------------------------------------------------------------------------
 ## PARAMETERS - Globale Deployment-Einstellungen
 ## ----------------------------------------------------------------------------
 
 parameters:
-  deploy_mode: html5-repo                # Deployment-Modus: HTML5 Repository
-  enable-parallel-deployments: true      # Paralleles Deployment für schnellere Builds
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
