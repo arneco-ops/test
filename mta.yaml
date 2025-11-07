@@ -22,31 +22,31 @@ modules:
   - name: angebotsliste-dest-content
     type: com.sap.application.content
     requires:
-      - name: angebotsliste-destination-service
+      - name: wm-angebotsliste-destination-service
         parameters:
           content-target: true
-      - name: angebotsliste-repo-host
+      - name: wm-angebotsliste-repo-host
         parameters:
           service-key:
-            name: angebotsliste-repo-host-key
+            name: wm-angebotsliste-repo-host-key
       - name: wm-angebotsliste-xsuaa
         parameters:
           service-key:
-            name: angebotsliste-xsuaa-key
+            name: wm-angebotsliste-xsuaa-key
     parameters:
       content:
         instance:
           destinations:
             ## HTML5 Repo Host als Destination registrieren
             - Name: angebotsliste_repo_host
-              ServiceInstanceName: angebotsliste-html5-app-host
-              ServiceKeyName: angebotsliste-repo-host-key
+              ServiceInstanceName: wm-angebotsliste-html5-app-host
+              ServiceKeyName: wm-angebotsliste-repo-host-key
               sap.cloud.service: angebotsliste
             ## XSUAA als Destination für OAuth2 registrieren
             - Authentication: OAuth2UserTokenExchange
               Name: angebotsliste_xsuaa
               ServiceInstanceName: wm-angebotsliste-xsuaa
-              ServiceKeyName: angebotsliste-xsuaa-key
+              ServiceKeyName: wm-angebotsliste-xsuaa-key
               sap.cloud.service: angebotsliste
           existing_destinations_policy: ignore
     build-parameters:
@@ -58,7 +58,7 @@ modules:
     type: com.sap.application.content
     path: .
     requires:
-      - name: angebotsliste-repo-host
+      - name: wm-angebotsliste-repo-host
         parameters:
           content-target: true
     build-parameters:
@@ -96,11 +96,11 @@ modules:
 resources:
   ## Destination Service
   ## Verwaltet Verbindungen zu Backend-Systemen
-  - name: angebotsliste-destination-service
+  - name: wm-angebotsliste-destination-service
     type: org.cloudfoundry.managed-service
     parameters:
       service: destination
-      service-name: angebotsliste-destination-service
+      service-name: wm-angebotsliste-destination-service
       service-plan: lite
       config:
         HTML5Runtime_enabled: true
@@ -127,11 +127,11 @@ resources:
 
   ## HTML5 Application Repository - Host Service
   ## Speichert die HTML5 Application Files
-  - name: angebotsliste-repo-host
+  - name: wm-angebotsliste-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
-      service-name: angebotsliste-html5-app-host
+      service-name: wm-angebotsliste-html5-app-host
       service-plan: app-host
 
 ## ----------------------------------------------------------------------------

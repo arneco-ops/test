@@ -11,26 +11,18 @@
     "mbt": "^1.2.29"
   },
   "scripts": {
-    "//": "=== Development Scripts ===",
+    "build_old": "ui5 build --all",
     "start": "fiori run --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile\"",
     "start-local": "fiori run --config ./ui5-local.yaml --open \"test/flpSandboxMockServer.html?sap-ui-xx-viewCache=false#app-tile\"",
     "start-noflp": "fiori run --open \"index.html?sap-ui-xx-viewCache=false\"",
-    "start-mock": "fiori run --open \"test/flpSandboxMockServer.html?sap-ui-xx-viewCache=false#app-tile\"",
     "start-variants-management": "fiori run --open \"preview.html?sap-ui-xx-viewCache=false&fiori-tools-rta-mode=true&sap-ui-rta-skip-flex-validation=true#preview-app\"",
-
-    "// ": "=== Build Scripts ===",
-    "clean": "rimraf dist gen resources test-resources mta_archives",
     "build": "ui5 build -a --clean-dest --include-task=generateCachebusterInfo",
-    "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
-    "build:mta": "npm run clean && mbt build",
-
-    "//  ": "=== Deployment Scripts ===",
     "deploy": "fiori cfDeploy",
     "deploy-config": "fiori add deploy-config",
-    "undeploy": "cf undeploy angebotsliste --delete-services --delete-service-keys --delete-service-brokers",
-
-    "//   ": "=== Legacy Scripts ===",
-    "build_old": "ui5 build --all"
+    "start-mock": "fiori run --open \"test/flpSandboxMockServer.html?sap-ui-xx-viewCache=false#app-tile\"",
+    "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
+    "build:mta": "rimraf resources mta_archives && mbt build",
+    "undeploy": "cf undeploy angebotsliste --delete-services --delete-service-keys --delete-service-brokers"
   },
   "sapuxLayer": "CUSTOMER_BASE",
   "keywords": [
