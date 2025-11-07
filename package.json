@@ -19,7 +19,7 @@
     "start-variants-management": "fiori run --open \"preview.html?sap-ui-xx-viewCache=false&fiori-tools-rta-mode=true&sap-ui-rta-skip-flex-validation=true#preview-app\"",
 
     "// ": "=== Build Scripts ===",
-    "clean": "rimraf dist dist-zip gen resources test-resources mta_archives",
+    "clean": "rimraf dist gen resources test-resources mta_archives",
     "build": "ui5 build -a --clean-dest --include-task=generateCachebusterInfo",
     "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
     "build:mta": "npm run clean && mbt build",

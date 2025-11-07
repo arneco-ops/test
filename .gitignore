@@ -9,7 +9,6 @@ node_modules/
 
 ## UI5 Build Outputs
 dist/                    # UI5 Build Output (ui5 build)
-dist-zip/                # Separates ZIP-Verzeichnis für MTA Build
 gen/                     # Generierte Dateien
 test-resources/          # Test-Build-Artefakte
 

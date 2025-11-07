@@ -78,11 +78,9 @@ modules:
       builder: custom
       commands:
         - npm ci
-        - npm run build:cf
-        - mkdir -p dist-zip
-        - cp dist/angebotsliste.zip dist-zip/
+        - npm run build:cf              # Erstellt dist/ mit angebotsliste.zip
       supported-platforms: []
-      build-result: dist-zip
+      build-result: dist                # Gesamtes dist/ Verzeichnis
       ignore:
         - node_modules/
         - test/
