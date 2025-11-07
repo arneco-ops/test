@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover showHeader="false" contentWidth="18rem" contentHeight="400px" placement="Bottom">
+		<NavContainer id="navCon">
+			<Page id="master" title="{i18n>FragmentWtTite}">
+				<List
+					id="WtList"
+					items="{/MultiWtCollection}" updateFinished="_onListUpdateFinished" updateStarted="_onListUpdateStarted" >
+					<StandardListItem
+							title="{Descr}"
+						type="Active" />
+				</List>
+			</Page>
+		</NavContainer>
+	</Popover>
+</core:FragmentDefinition>

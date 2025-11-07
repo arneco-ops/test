@@ -1,0 +1,2 @@
+sap.ui.define(["de/axelspringer/sd/advertising/Angebots_Liste/controller/BaseController"],function(t){"use strict";const e=t.extend("de.axelspringer.sd.advertising.Angebots_Liste.controller.NotFound",{});e.prototype.onInit=function(){this.getRouter().getTarget("notFound").attachDisplay(this._onNotFoundDisplayed,this)};e.prototype._onNotFoundDisplayed=function(){this.getModel("appView").setProperty("/layout","OneColumn")};return e});
+//# sourceMappingURL=NotFound.controller.js.map
