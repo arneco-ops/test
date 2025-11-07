@@ -9,7 +9,7 @@
   ],
   "role-templates": [
     {
-      "name": "Viewer",
+      "name": "Angebotsliste_Viewer",
       "description": "View data",
       "scope-references": [
         "$XSAPPNAME.Display"
