@@ -8,25 +8,25 @@
 node_modules/
 
 ## UI5 Build Outputs
-dist/                    # UI5 Build Output (ui5 build)
-gen/                     # Generierte Dateien
-test-resources/          # Test-Build-Artefakte
+dist/
+gen/
+test-resources/
 
 ## MTA Build Artifacts
-mta_archives/            # Finale MTAR-Dateien
-resources/               # MTA Build Resources
-.scp/                    # SAP Cloud Platform Build-Dateien
-Makefile*.mta            # Generierte MTA Makefiles
-mta-*                    # MTA temporäre Dateien
-.*_mta_build_tmp         # MTA Build temporäre Verzeichnisse
-archive.zip              # Temporäre Archive
+mta_archives/
+resources/
+.scp/
+Makefile*.mta
+mta-*
+.*_mta_build_tmp
+archive.zip
 
 ## Environment & Secrets
-.env                     # Environment-Variablen (nie committen!)
+.env
 
-## IDE & Editor Files (optional)
-.vscode/settings.json    # Persönliche VS Code Einstellungen
-.idea/                   # IntelliJ IDEA
-*.swp                    # Vim swap files
-*.swo                    # Vim swap files
-*~                       # Backup files
+## IDE & Editor Files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
